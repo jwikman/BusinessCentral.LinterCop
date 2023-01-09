@@ -8,6 +8,7 @@ using System.Linq;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System.Collections.Generic;
 using System.CodeDom;
+using System.Text.RegularExpressions;
 
 namespace BusinessCentral.LinterCop.Design
 {
@@ -19,6 +20,7 @@ namespace BusinessCentral.LinterCop.Design
         public override void Initialize(AnalysisContext context)
             => context.RegisterSymbolAction(new Action<SymbolAnalysisContext>(this.CheckForTODOs), SymbolKind.Codeunit, SymbolKind.Enum, SymbolKind.Interface, SymbolKind.PermissionSet, SymbolKind.Query, SymbolKind.Table, SymbolKind.Page, SymbolKind.Report, SymbolKind.XmlPort);
 
+        private Regex regex = new Regex("\\bTODO\\b");
         private void CheckForTODOs(SymbolAnalysisContext ctx)
         {
             var manifest = AppSourceCopConfigurationProvider.GetManifest(ctx.Compilation);
@@ -27,13 +29,13 @@ namespace BusinessCentral.LinterCop.Design
 
             foreach (var trivia in ctx.Symbol.DeclaringSyntaxReference.GetSyntax().DescendantTrivia().Where(t => IsCommentTrivia(t)))
             {
-                if (trivia.ToString().Contains("TODO"))
+                if (regex.IsMatch(trivia.ToString()))
                 {
                     if (!trivia.ContainsDiagnostics)
                     {
                         var text = trivia.ToString().Substring(trivia.ToString().IndexOf("TODO"));
                         text = text.Split('\n', '\r')[0];
-                        ctx.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptors.Rule0099TODOsMustNotBePresent, trivia.GetLocation(),new Object[] { text }));
+                        ctx.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptors.Rule0099TODOsMustNotBePresent, trivia.GetLocation(), new Object[] { text }));
                     }
                 }
             }
