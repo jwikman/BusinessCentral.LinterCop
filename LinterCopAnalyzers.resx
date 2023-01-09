@@ -382,4 +382,16 @@
   <data name="Rule0022GlobalLanguageImplementTranslationHelperTitle" xml:space="preserve">
     <value>GlobalLanguage() must be implemented through the "Translation Helper" codeunit from the Base Application.</value>
   </data>
+  <data name="Rule0099TODOsMustNotBePresentDescription" xml:space="preserve">
+    <value>TODO found in the code!</value>
+    <comment/>
+  </data>
+  <data name="Rule0099TODOsMustNotBePresentFormat" xml:space="preserve">
+    <value>TODO found in the code: '{0}'</value>
+    <comment/>
+  </data>
+  <data name="Rule0099TODOsMustNotBePresentTitle" xml:space="preserve">
+    <value>TODO found in the code!</value>
+    <comment/>
+  </data>
 </root>
